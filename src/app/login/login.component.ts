@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   error: string = '';
   
 
-  constructor(private router: Router, private httpClient: HttpClient, private auth: MeService) { }
+  constructor(private router: Router, private auth: MeService) { }
 
   ngOnInit(): void {
   }
@@ -28,9 +28,9 @@ export class LoginComponent implements OnInit {
     try{
       const bodyParse: Auth$LoginParams = {email: this.email, password: this.password};
       // await this.httpClient.post('auth/login', bodyParse).toPromise();
-      await this.auth.login(bodyParse)
-      console.log(bodyParse);
-      
+      await this.auth.login(bodyParse);
+      // console.log(bodyParse);
+    
       await this.router.navigateByUrl('/profile');
 
     }catch(err){

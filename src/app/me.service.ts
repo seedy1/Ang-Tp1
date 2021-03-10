@@ -3,6 +3,7 @@ import { Auth$LoginParams } from '@backend/routes/auth/post.login.interfaces';
 import User from '@backend/models/user';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 // http://backend.thomas-veillard.fr/docs/
+// operator@cleaning.com  customer employee
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,36 @@ export class MeService {
 
   // resolve!: () => Promise<User | null>;
 
+  async resolve(){
+
+    if (typeof(this.me) !== 'undefined'){
+      return this.me; 
+    }
+
+    try {
+    
+      this.me = await this.http.get('/api/users/me').toPromise() as User;
+      // this.me = await this.http.get('https://backend.thomas-veillard.fr/api/users/me', {withCredentials: true}).toPromise() as User;
+    } catch (err) {
+      if (err instanceof HttpErrorResponse){
+        console.log("http error");
+        
+        if(err.status === 403){
+          this.me = null;
+          console.log("403 error");
+
+        }
+      }
+      else throw err;
+    }
+
+    return this.me;
+  }
+  
+
   async login(credentials: Auth$LoginParams){
-    await this.http.post('http://127.0.0.1:8080/auth/login', credentials).toPromise();
+    await this.http.post('/auth/login', credentials).toPromise();
+    // await this.http.post('https://backend.thomas-veillard.fr/auth/login', credentials).toPromise();
     this.me = undefined;
   };
   
@@ -26,23 +55,11 @@ export class MeService {
    * Returns Promise<void> if success.
    */
   async logout () {
-    await this.http.delete('http://127.0.0.1:8080/auth/logout').toPromise();
+    await this.http.delete('/auth/logout').toPromise();
+    // await this.http.delete('https://backend.thomas-veillard.fr/auth/logout').toPromise();
     this.me = undefined; // reset cache
   }
 
-  async resolve () {
-    if (typeof this.me !== 'undefined') return this.me;
-//http://127.0.0.1:8080/api/users/me
-    try {
-      // this.me = await this.http.get('/api/user/me').toPromise() as User;
-      this.me = await this.http.get('http://127.0.0.1:8080/api/user/me').toPromise() as User;
-    } catch (err) {
-      if (err instanceof HttpErrorResponse && err.status === 403) this.me = null;
-      else throw err;
-    }
-
-    return this.me;
-  }
 
 }
 

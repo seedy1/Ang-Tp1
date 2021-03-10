@@ -5,13 +5,15 @@ import { LoginComponent } from "./login/login.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { NavigationComponent } from "./navigation/navigation.component";
 import { MeService } from "./me.service";
+import { UnauthenticatedGuard } from "./unauthenticated.guard";
+import {AuthenticatedGuard} from "./authenticated.guard";
 
 // import {  } from "@angular/router";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, resolve: {me: MeService} },
-  { path: 'login', component: LoginComponent, resolve: {me: MeService} },
-  { path: 'profile', component: ProfileComponent, resolve: {me: MeService} },
+  { path: 'login', component: LoginComponent, resolve: {me: MeService}, canActivate: [UnauthenticatedGuard] },
+  { path: 'profile', component: ProfileComponent, resolve: {me: MeService}, canActivate: [AuthenticatedGuard] }
   
 ];
 

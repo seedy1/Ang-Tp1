@@ -1,11 +1,16 @@
 <mat-toolbar>
     <a routerLink="/">My App</a>
+
     <span class="example-spacer"></span>
-    <button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <a routerLink="/login" *ngIf="!me">Login</a>
-    </button>
-    <button class="example-icon" aria-label="Example icon-button with share icon">
-        <a routerLink="/profile" *ngIf="me">Profile</a>
-    </button>
+
+    <a routerLink="/login" *ngIf="!me"> <button> Login </button> </a>
+
+    <a routerLink="/profile" *ngIf="me"> <button>Profile</button> </a>
+
+    <button *ngIf="me" (click)="logout()">Profile</button>
+
+    <!-- <button class="example-icon" aria-label="Example icon-button with share icon">
+        <a routerLink="/" *ngIf="me" >Logout</a>
+    </button> -->
 
   </mat-toolbar>
